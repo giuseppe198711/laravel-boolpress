@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\SendNewMail;
+use Illuminate\Support\Facades\Mail;
 
 class ArticleController extends Controller
 {
@@ -64,6 +66,8 @@ class ArticleController extends Controller
         $newArticle->image = $path;
 
         $newArticle->save();
+
+        Mail::to('mail@mail.it')->send(new SendNewMail($newArticle));
 
         return redirect()->route("admin.posts.show", $newArticle->slug);
 
